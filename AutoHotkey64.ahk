@@ -1,4 +1,6 @@
 #Requires AutoHotkey v2.0
+
+; Define Hotkeys
 #z::Run "https://www.autohotkey.com"  ; Win+Z
 
 ^!n::  ; Ctrl+Alt+N
@@ -8,26 +10,26 @@
     else
         Run "Notepad"
 }
+
 ; Windows Terminal with Win+1
 #1::
 {
-    If WinExist("ahk_exe WindowsTerminal.exe")
-        WinActivate ; uses the last found window
+    if WinExist("ahk_exe WindowsTerminal.exe")
+        WinActivate
     else
-        Run "wt" ; command to run Windows Terminal
+        Run "wt"
 }
-
 
 ; Visual Studio Code with Win+2
 #2::
 {
-    If WinExist("ahk_exe Code.exe")
-        WinActivate ; uses the last found window
+    if WinExist("ahk_exe Code.exe")
+        WinActivate
     else
-       Run "Code" ; command to run Visual Studio Code
+        Run "Code"
 }
 
-; Disable default behavior
+; Google Chrome with Win+3
 #3::
 {
     if WinExist("Google Chrome")
@@ -36,123 +38,78 @@
         Run "Chrome"
 }
 
+; Empty Hotkeys
 #4::
+#7::
+#8::
+
+; Firefox with Win+5
+#5:: 
 {
-}
-#5:: ; win+5
-{
-    if WinExist("ahk_class MozillaWindowClass") 
-        WinActivate ; Use the window found by WinExist.
+    if WinExist("ahk_class MozillaWindowClass")
+        WinActivate
     else
         Run "Firefox"
 }
-; pid: 18612 id: 332336
-#6:: ; win+6
+
+; ChatGPT with Win+6
+#6:: 
 {
-    if WinExist("ChatGPT") 
-        WinActivate ; Use the window found by WinExist.
+    if WinExist("ChatGPT")
+        WinActivate
     else
-        Run '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe"  --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg"'
+        Run '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe" --profile-directory=Default --app-id=cadlkienfkclaiaibeoongdcgmdikeeg"'
 }
 
-#7::
-{
-}
-#8::
-{
-}
-
-#9::
-{
-    MsgBox "The active window's ID is " WinExist("A")
-}
+; Display active window's ID with Win+9
+#9::MsgBox "The active window's ID is " WinExist("A")
 
 ; File Explorer with Win+e
-#e::
+#e:: 
 {
-    If WinExist("ahk_class CabinetWClass") or WinExist("ahk_class ExploreWClass")
-        WinActivate ; uses the last found window
+    if WinExist("ahk_class CabinetWClass") or WinExist("ahk_class ExploreWClass")
+        WinActivate
     else
-        Run "explorer" ; command to run File Explorer
+        Run "explorer"
 }
 
+; OneKeySequence Hotkey Setup
+#a::OneKeySequence(ThisHotkey)
 
-
-Hotkey "#a", OneKeySequince ; Open app {x}
-
-OneKeySequince(ThisHotkey)
+; Function Definitions
+OneKeySequence(ThisHotkey)
 {
     ih := InputHook("L1")
     ih.Start()
     ih.Wait()
     key := Ord(ih.Input)
-    MsgBox key
-    if (key == 102)  ; f - Focus TO-DO app
-    {
-        try {
-            If WinExist("ahk_exe FocusToDo.exe")
-                WinActivate ; uses the last found window
-            else
-                Run "C:\Program Files\WindowsApps\52299SuperElement.119436511DDC8_7.0.0.0_neutral__792yctbvabkar\FocusToDo\FocusToDo.exe" ; command to run Focus To-Do
-        } catch Error as err {
-            MsgBox "Cant run Focus To-DO app", err.Message
+    
+    try {
+        switch key {
+            case 102:  ; f - Focus TO-DO app
+                RunOrActivate("ahk_exe FocusToDo.exe", "C:\Program Files\WindowsApps\52299SuperElement.119436511DDC8_7.0.0.0_neutral__792yctbvabkar\FocusToDo\FocusToDo.exe")
+            case 116:  ; t - Telegram App
+                RunOrActivate("ahk_exe Telegram.exe", "Telegram.exe")
+            case 122:  ; z - Zoom App
+                RunOrActivate("ahk_exe Zoom.exe", "C:\Users\dsgol\AppData\Roaming\Zoom\bin\Zoom.exe")
+            case 115:  ; s - Slack App
+                RunOrActivate("ahk_exe Slack.exe", "Slack.exe")
+            case 114:  ; r - Reminder App
+                RunOrActivate("iCloud Reminders", '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe" --profile-directory=Default --app-id=nffepbmcpdbglihcidhnbefejbophemm"')
+            case 110:  ; n - Notes App
+                RunOrActivate("iCloud Notes", '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe" --profile-directory=Default --app-id=hdbfcilmnlkoiempgdfpifdnhnjiigfh"')
+            default:
+                MsgBox "Not found any App matched the key", key
         }
+    } catch Error as err {
+        MsgBox "Can't run the application", err.Message
     }
-    if (key == 116)  ; t - Telegram App
-    {
-        try {
-            If WinExist("ahk_exe Telegram.exe")
-                WinActivate ; uses the last found window
-            else
-                Run "Telegram.exe"
-        } catch Error as err {
-            MsgBox "Cant run Focus To-DO app", err.Message
-        }
-    }
-    if (key == 122)  ; z - Zoom App
-    {
-        try {
-            If WinExist("ahk_exe Zoom.exe")
-                WinActivate ; uses the last found window
-            else
-                Run "Zoom.exe"
-        } catch Error as err {
-            MsgBox "Cant run Zoom app", err.Message
-        }
-    }
-    if (key == 115)  ; z - Slack App
-    {
-        try {
-            If WinExist("ahk_exe Slack.exe")
-                WinActivate ; uses the last found window
-            else
-                Run "Slack.exe"
-        } catch Error as err {
-            MsgBox "Cant run Slack To-DO app", err.Message
-        }
-    }
-    if (key == 114) ; r - Reminder App
-    {
-        try {
-            If WinExist("iCloud Reminders")
-                WinActivate ; uses the last found window
-            else
-                Run '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe"  --profile-directory=Default --app-id=nffepbmcpdbglihcidhnbefejbophemm"' ; from "target" in app properties
-        } catch Error as err {
-            MsgBox "Cant run Icloud Remider App", err.Message
-        }
-    }
-    if (key == 110) ; n - Notes App
-    {
-        try {
-            If WinExist("iCloud Notes")
-                WinActivate ; uses the last found window
-            else
-                Run '"C:\Program Files\Google\Chrome\Application\chrome_proxy.exe"  --profile-directory=Default --app-id=hdbfcilmnlkoiempgdfpifdnhnjiigfh"' ; from "target" in app properties
-        } catch Error as err {
-            MsgBox "Cant run Icloud Remider App", err.Message
-        }
-    }
-
 }
 
+RunOrActivate(winTitle, runCommand)
+{
+    if WinExist(winTitle)
+        WinActivate
+    else
+        Run runCommand
+}

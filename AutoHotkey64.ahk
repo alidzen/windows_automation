@@ -89,7 +89,7 @@ OneKeySequence(ThisHotkey)
             case 102:  ; f - Focus TO-DO app
                 RunOrActivate("ahk_exe FocusToDo.exe", "C:\Program Files\WindowsApps\52299SuperElement.119436511DDC8_7.0.0.0_neutral__792yctbvabkar\FocusToDo\FocusToDo.exe")
             case 116:  ; t - Telegram App
-                RunOrActivate("ahk_exe Telegram.exe", "Telegram.exe")
+                RunOrActivate("ahk_exe Telegram.exe", "C:\Users\dsgol\AppData\Roaming\Telegram Desktop\Telegram.exe")
             case 122:  ; z - Zoom App
                 RunOrActivate("ahk_exe Zoom.exe", "C:\Users\dsgol\AppData\Roaming\Zoom\bin\Zoom.exe")
             case 115:  ; s - Slack App
